@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+
+    <style type="text/css">
+        iframe {
+            width: 100%;
+            height: 75vh;
+        }
+
+        .container-fluid {
+            padding: 15px;
+        }
+
+        .row{
+            padding-left: 10px;
+            margin-left: 5px;
+        }
+
+        p {
+            display: inline;
+            line-height: 500%;
+        }
+
+        .circle {
+            width: 65px;
+            height: 40px;
+            padding: 20px;
+            border-radius: 40px;
+            font-size: 80%;
+
+            background: yellow;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .clicked {
+            width: 75px;
+            height: 40px;
+            padding: 20px;
+            border-radius: 40px;
+            font-size: 80%;
+            font-weight: bold;
+            background: orange;
+            cursor: pointer;
+            text-align: center;
+        }
+
+    </style>
+    {% block css %}{% endblock %}
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <iframe src="{{ next_news }}">
+        Sorry your browser does not support inline frames.
+    </iframe>
+</div>
+
+{% block content %}{% endblock %}
+
+<div class="row">
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+    <p class='circle'>.</p>
+</div>
+
+<script src='static/js/jquery.min.js'></script>
+<script src="static/js/bootstrap.min.js"></script>
+
+{% block script %}{% endblock %}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //alert('foo');
+        //window.location.replace('/favcyasdasd?id='+{{next_news.objectId}}+'&tags='+tag_list);
+    });
+
+    var tags_list = 'venture,spontaneity,energy,fun,travelling,outgoing,active,honesty,caring,moral,respect,loyal,trust,values,loving,trustworthy,intellectual,debate,geek,nerdy,ambitious,driven,politics,challenging,heart,kind,sensitive,sweet,learning,random,empathy'.split(',');
+    tags_list = shuffle(tags_list);
+
+    $('.circle').each(function () {
+        $(this).text(tags_list.pop());
+    });
+
+    $('.circle').click(function () {
+
+        $(this).toggleClass('clicked');
+
+        if ($('.clicked').length == 3) {
+            var tag_list = '';
+            $('.clicked').each(function () {
+                tag_list = tag_list + $(this).text() + ',';
+            });
+            alert('Submitting this article with the following tags: ' + tag_list);
+
+            window.location.replace('/tokenize/' + '{{ news_id }}' + '/' + tag_list);
+
+        }
+
+    });
+
+    function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+
+</script>
+
+
+</body>
+
+</html>
