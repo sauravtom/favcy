@@ -45,6 +45,16 @@ def tokenize(id, tag_list):
     marker += 1
     return redirect('/')
 
+@app.route('/info')
+def info():
+    db = firebase.database()
+    emotion_tokens = db.get()
+    data = []
+    for i in emotion_tokens.each():
+        data.append([i.val()['news_url'], i.val()['tags']])
+    # return jsonify(emotion_tokens.val())
+    return render_template('info.html', data=data)
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
