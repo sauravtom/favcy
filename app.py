@@ -27,7 +27,7 @@ def index():
     global url_arr, marker, first
     if first:
         url_arr = [i['article']['url'] for i in response['response']]
-        db = firebase.database()
+        db = firebase.database().child('ArticleEmotionTokenizer')
         emotion_tokens = db.get()
 
         if emotion_tokens.each() is not None :
@@ -48,7 +48,7 @@ def tokenize(id, tag_list):
         "news_url" : url_arr[marker],
         "tags" : tag_list[:-1]
     }
-    db = firebase.database()
+    db = firebase.database().child('ArticleEmotionTokenizer')
     db.push(data)
 
     marker += 1
@@ -56,7 +56,7 @@ def tokenize(id, tag_list):
 
 @app.route('/info')
 def info():
-    db = firebase.database()
+    db = firebase.database().child('ArticleEmotionTokenizer')
     emotion_tokens = db.get()
     data = []
     if emotion_tokens.each() is not None:
