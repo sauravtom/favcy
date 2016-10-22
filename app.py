@@ -27,6 +27,16 @@ def index():
     global url_arr, marker, first
     if first:
         url_arr = [i['article']['url'] for i in response['response']]
+        db = firebase.database()
+        emotion_tokens = db.get()
+
+        if emotion_tokens.each() is not None :
+            url_data = [i.val()['news_url'] for i in emotion_tokens.each()]
+            for i in range(0, len(url_data)):
+                if url_data[i] in url_arr:
+                    url_arr.remove(url_data[i])
+                    print(url_data[i])
+
         first = False
     return render_template('Dashboard.html', next_news=url_arr[marker], news_id=marker)
 
@@ -50,8 +60,9 @@ def info():
     db = firebase.database()
     emotion_tokens = db.get()
     data = []
-    for i in emotion_tokens.each():
-        data.append([i.val()['news_url'], i.val()['tags']])
+    if emotion_tokens.each() is not None:
+        for i in emotion_tokens.each():
+            data.append([i.val()['news_url'], i.val()['tags']])
     # return jsonify(emotion_tokens.val())
     return render_template('info.html', data=data)
 
