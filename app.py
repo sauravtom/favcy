@@ -35,7 +35,6 @@ def index():
             for i in range(0, len(url_data)):
                 if url_data[i] in url_arr:
                     url_arr.remove(url_data[i])
-                    print(url_data[i])
 
         first = False
     return render_template('Dashboard.html', next_news=url_arr[marker], news_id=marker)
